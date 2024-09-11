@@ -43,77 +43,61 @@ Step-by-Step Guide to Writing JavaScript-like Code
 Setting Up the Contract Structure
 Define the basic structure of the contract:
 
-
-
 // Define the contract class
 class MySmartContract {
-    constructor() {
-        // Constructor code
-    }
+constructor() {
+// Constructor code
+}
 }
 Defining State Variables
 Define state variables to store data on the blockchain:
 
-
-
 class StakingContract {
-    constructor(tokenAddress) {
-        this.stakes = {}; // Mapping of user addresses to their staked amount
-        this.token = tokenAddress; // The ERC-20 token address
-        this.owner = msg.sender; // Contract deployer
-    }
+constructor(tokenAddress) {
+this.stakes = {}; // Mapping of user addresses to their staked amount
+this.token = tokenAddress; // The ERC-20 token address
+this.owner = msg.sender; // Contract deployer
+}
 }
 Writing the Constructor
 Initialize the state of the contract in the constructor:
 
-
-
 constructor(tokenAddress) {
-    this.token = tokenAddress; // Set token address
-    this.owner = msg.sender; // Set the contract owner
+this.token = tokenAddress; // Set token address
+this.owner = msg.sender; // Set the contract owner
 }
 Adding Functions
 Add functions to define contract behaviors:
 
-
-
 // Function to stake tokens
 stake(amount) {
-    require(amount > 0, "Amount must be greater than zero");
-    this.stakes[msg.sender] += amount;
-    IERC20(this.token).transferFrom(msg.sender, this, amount);
+require(amount > 0, "Amount must be greater than zero");
+this.stakes[msg.sender] += amount;
+IERC20(this.token).transferFrom(msg.sender, this, amount);
 }
 Handling Access Modifiers
 Use access control checks to restrict function execution:
 
-
-
 function onlyOwner() {
-    require(msg.sender === this.owner, "Only owner can execute");
+require(msg.sender === this.owner, "Only owner can execute");
 }
 Creating Events
 Define events to notify off-chain applications:
-
-
 
 // Event for staking
 event Stake(address indexed user, uint256 amount);
 Handling Errors
 Use require and revert for error handling:
 
-
-
 require(condition, "Error message");
 Inheritance and Modifiers
 Utilize inheritance to reuse code:
 
-
-
 class StakingContract extends Ownable {
-    constructor(tokenAddress) {
-        super();
-        this.token = tokenAddress;
-    }
+constructor(tokenAddress) {
+super();
+this.token = tokenAddress;
+}
 }
 Converting to Solidity
 Open the Transpiler Interface: Access the CLI or web-based tool.
@@ -126,14 +110,14 @@ solidity
 pragma solidity ^0.8.0;
 
 interface IERC20 {
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
-    function transfer(address recipient, uint256 amount) external returns (bool);
+function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+function transfer(address recipient, uint256 amount) external returns (bool);
 }
 
 contract StakingContract {
-    mapping(address => uint256) public stakes;
-    address public token;
-    address public owner;
+mapping(address => uint256) public stakes;
+address public token;
+address public owner;
 
     constructor(address tokenAddress) {
         token = tokenAddress;
@@ -156,6 +140,7 @@ contract StakingContract {
     function checkStake(address user) public view returns (uint256) {
         return stakes[user];
     }
+
 }
 Compiling and Deploying the Contract
 Using Remix
@@ -184,12 +169,13 @@ js
 const { ethers } = require("ethers");
 
 async function main() {
-    const provider = new ethers.providers.JsonRpcProvider("<RPC_URL>");
-    const signer = provider.getSigner();
-    const stakingContract = new ethers.Contract("<CONTRACT_ADDRESS>", abi, signer);
+const provider = new ethers.providers.JsonRpcProvider("<RPC_URL>");
+const signer = provider.getSigner();
+const stakingContract = new ethers.Contract("<CONTRACT_ADDRESS>", abi, signer);
 
     // Example: Call the stake function
     await stakingContract.stake(ethers.utils.parseUnits("10", 18));
+
 }
 Best Practices
 Security: Always validate inputs and handle errors.
